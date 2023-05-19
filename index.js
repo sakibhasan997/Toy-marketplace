@@ -33,7 +33,7 @@ async function run() {
     const toysCollection = client.db('carsDB').collection('posted')
 
 
-    app.get('/')
+    // app.get('/')
 
     app.get('/toys', async (req, res) => {
       // console.log(req.params.text);
@@ -48,6 +48,12 @@ async function run() {
       const result = await tabToysCollection.find().toArray();
       res.send(result);
     })
+
+  //   app.get('/tabToys/:id', async (req,res)=>{
+  //     console.log(req.params.id);
+  //     const result = await tabToysCollection.find({_id: req.params.id}).toArray();
+  //     res.send(result)
+  // })
 
 
     // Send a ping to confirm a successful connection
