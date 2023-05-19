@@ -26,9 +26,28 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-     client.connect();
+    client.connect();
+
+    const setToysCollection = client.db('carsDB').collection('allToys');
+    const tabToysCollection = client.db('carsDB').collection('tabToy');
+    const toysCollection = client.db('carsDB').collection('posted')
 
 
+    app.get('/')
+
+    app.get('/toys', async (req, res) => {
+      // console.log(req.params.text);
+      // if(req.params.text == 'truck' || req.params.text == 'regular car'|| req.params.text == 'sports car'){
+      //   const result = await setToysCollection.find({sub_category: req.params.text}).toArray();
+      //   res.send(result)
+      // }
+      const result = await setToysCollection.find().toArray();
+      res.send(result);
+    })
+    app.get('/tabToys', async (req, res) => {
+      const result = await tabToysCollection.find().toArray();
+      res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
@@ -43,11 +62,11 @@ run().catch(console.dir);
 
 
 
-app.get('/', (req, res)=>{
-    res.send('Hello Brother I am Running Now You Can Do This')
+app.get('/', (req, res) => {
+  res.send('Hello Brother I am Running Now You Can Do This')
 });
 
 
-app.listen(port, ()=>{
-    console.log(`server site is running port: ${port}`);
+app.listen(port, () => {
+  console.log(`server site is running port: ${port}`);
 })
