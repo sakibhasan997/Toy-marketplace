@@ -34,14 +34,12 @@ async function run() {
 
 
 
-
-    // post toys in database
-    app.post('/postToys', async(req, res)=>{
-      const body = req.body;
-      console.log(body);
-      const result = await toysCollection.insertOne(body);
-        res.send(result)
+    // get toy data
+    app.get('/tabToys', async (req, res) => {
+      const result = await tabToysCollection.find().toArray();
+      res.send(result);
     })
+    // get data
     app.get('/toys', async (req, res) => {
       console.log(req.query.email);
       let query = {};
@@ -51,6 +49,33 @@ async function run() {
       const result = await toysCollection.find(query).toArray();
       res.send(result);
     })
+    
+    // post toys in database
+    app.post('/postToys', async(req, res)=>{
+      const body = req.body;
+      console.log(body);
+      const result = await toysCollection.insertOne(body);
+        res.send(result)
+    })
+
+    // deleted data
+    app.delete('/toys/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await toysCollection.deleteOne(query);
+      res.send(result);
+    })
+
+    // updated data
+    app.get('/toys/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await toysCollection.findOne(query);
+      res.send(result)
+    })
+
+  
+
     
     
 
@@ -67,10 +92,7 @@ async function run() {
     //   res.send(result)
     // }
    
-    app.get('/tabToys', async (req, res) => {
-      const result = await tabToysCollection.find().toArray();
-      res.send(result);
-    })
+    
 
   //   app.get('/tabToys/:id', async (req,res)=>{
   //     console.log(req.params.id);
@@ -78,13 +100,7 @@ async function run() {
   //     res.send(result)
   // })
 
-    app.delete('/toys/:id', async(req, res)=>{
-      const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
-      const result = await toysCollection.deleteOne(query);
-      res.send(result);
-    })
-
+   
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
