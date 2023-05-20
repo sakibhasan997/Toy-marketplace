@@ -21,6 +21,7 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   }
+  
 });
 
 async function run() {
@@ -66,6 +67,7 @@ async function run() {
       const result = await toysCollection.find(query).sort({ sub_category: 1 }).toArray();
       res.send(result);
     })
+
 
     // updated data
     app.get('/toys/:id', async (req, res) => {
