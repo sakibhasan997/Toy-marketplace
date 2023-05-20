@@ -33,17 +33,31 @@ async function run() {
     const toysCollection = client.db('carsDB').collection('posted')
 
 
-    // app.get('/')
 
+
+    // post toys in database
+    app.post('/postToys', async(req, res)=>{
+      const body = req.body;
+      console.log(body);
+      const result = await toysCollection.insertOne(body);
+        res.send(result)
+    })
     app.get('/toys', async (req, res) => {
-      // console.log(req.params.text);
-      // if(req.params.text == 'truck' || req.params.text == 'regular car'|| req.params.text == 'sports car'){
-      //   const result = await setToysCollection.find({sub_category: req.params.text}).toArray();
-      //   res.send(result)
-      // }
-      const result = await setToysCollection.find().toArray();
+      const result = await toysCollection.find().toArray();
       res.send(result);
     })
+
+
+
+
+    // app.get('/')
+
+    // console.log(req.params.text);
+    // if(req.params.text == 'truck' || req.params.text == 'regular car'|| req.params.text == 'sports car'){
+    //   const result = await setToysCollection.find({sub_category: req.params.text}).toArray();
+    //   res.send(result)
+    // }
+   
     app.get('/tabToys', async (req, res) => {
       const result = await tabToysCollection.find().toArray();
       res.send(result);
