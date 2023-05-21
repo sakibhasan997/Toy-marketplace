@@ -20,23 +20,14 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  },
-  // load
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
-  // maxPoolSize: 10,
+  }
+ 
   
 });
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    // client.connect((err)=>{
-    //   if(err){
-    //     console.error(err);
-    //     return
-    //   }
-    // })
+   
 
     const setToysCollection = client.db('carsDB').collection('allToys');
     const tabToysCollection = client.db('carsDB').collection('tabToy');
@@ -44,10 +35,10 @@ async function run() {
 
 
     // indexing search
-    const indexKeys = { toy_name: 1, sub_category: 1 }; // Replace field1 and field2 with your actual field names
-    const indexOptions = { name: "nameCategory" }; // Replace index_name with the desired index name
-    const result = await toysCollection.createIndex(indexKeys, indexOptions);
-    console.log(result);
+    // const indexKeys = { toy_name: 1, sub_category: 1 }; // Replace field1 and field2 with your actual field names
+    // const indexOptions = { name: "nameCategory" }; // Replace index_name with the desired index name
+    // const result = await toysCollection.createIndex(indexKeys, indexOptions);
+    // console.log(result);
 
     // searching
     app.get('/toySearchByTitle/:text', async (req, res) => {
@@ -66,14 +57,7 @@ async function run() {
       const result = await tabToysCollection.find().toArray();
       res.send(result);
     })
-    // get toy details
-    app.get('/tabToys/:id', async (req, res) => {
-      const id = req.params.id;
-      // console.log(id);
-      const query = { _id: new ObjectId(id) }
-      const result = await tabToysCollection.findOne(query);
-      res.send(result)
-    }) 
+    
 
 
     // get data
