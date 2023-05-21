@@ -20,14 +20,23 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
+  // load
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
+  // maxPoolSize: 10,
   
 });
 
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-
+    // client.connect((err)=>{
+    //   if(err){
+    //     console.error(err);
+    //     return
+    //   }
+    // })
 
     const setToysCollection = client.db('carsDB').collection('allToys');
     const tabToysCollection = client.db('carsDB').collection('tabToy');
@@ -54,9 +63,19 @@ async function run() {
 
     // get toy data
     app.get('/tabToys', async (req, res) => {
-      const result = await tabToysCollection.find().sort({ category: 1 }).toArray();
+      const result = await tabToysCollection.find().toArray();
       res.send(result);
     })
+    // get toy details
+    app.get('/tabToys/:id', async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const query = { _id: new ObjectId(id) }
+      const result = await tabToysCollection.findOne(query);
+      res.send(result)
+    }) 
+
+
     // get data
     app.get('/toys', async (req, res) => {
       // console.log(req.query.email);
@@ -64,7 +83,7 @@ async function run() {
       if (req.query?.email) {
         query = { postedBy: req.query.email }
       }
-      const result = await toysCollection.find(query).sort({ sub_category: 1 }).toArray();
+      const result = await toysCollection.find(query).limit(20).sort({ sub_category: 1 }).toArray();
       res.send(result);
     })
 
@@ -74,7 +93,7 @@ async function run() {
       const id = req.params.id;
       // console.log(id);
       const query = { _id: new ObjectId(id) }
-      const result = await toysCollection.findOne(query);
+      const result = await toysCollection.findOne(query).sort({ sub_category: 1 });
       res.send(result)
     })
 
