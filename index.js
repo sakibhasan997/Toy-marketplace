@@ -34,11 +34,6 @@ async function run() {
     const toysCollection = client.db('carsDB').collection('posted')
 
 
-    // indexing search
-    // const indexKeys = { toy_name: 1, sub_category: 1 }; // Replace field1 and field2 with your actual field names
-    // const indexOptions = { name: "nameCategory" }; // Replace index_name with the desired index name
-    // const result = await toysCollection.createIndex(indexKeys, indexOptions);
-    // console.log(result);
 
     // searching
     app.get('/toySearchByTitle/:text', async (req, res) => {
@@ -77,7 +72,7 @@ async function run() {
       const id = req.params.id;
       // console.log(id);
       const query = { _id: new ObjectId(id) }
-      const result = await toysCollection.findOne(query).sort({ sub_category: 1 });
+      const result = await toysCollection.findOne(query);
       res.send(result)
     })
 
@@ -113,14 +108,6 @@ async function run() {
       const result = await toysCollection.deleteOne(query);
       res.send(result);
     })
-
-
-
-
-
-
-
-
 
 
 
